@@ -29,43 +29,46 @@ class Home extends React.Component {
     this.setState(
       { ...this.state, pageNo: this.state.pageNo + 1, loading: true },
       () => {
-        this.fetchSearchResults();
+        this.checkCacheOrFetch();
       }
     );
   };
 
-  fetchSearchResults = () => {
-    const searchUrl = `https://newsapi.org/v2/everything?q=${this.state.query}&apiKey=f5984715a9fd4e04bf904d3fb3923869&pageSize=5&page=${this.state.pageNo}`;
+  checkCacheOrFetch = () => {
+    const currentQuery = `https://newsapi.org/v2/everything?q=${this.state.query}&apiKey=f5984715a9fd4e04bf904d3fb3923869&pageSize=5&page=${this.state.pageNo}`;
 
+    //If an Existing request Exists, Delete it
     if (this.prevRequestToken) {
-      //If an Existing request Exists, Delete it
       this.prevRequestToken.cancel();
-      console.log("cancelled", this.prevRequestToken);
-      // return;
+      // console.log("cancelled", this.prevRequestToken);
     }
 
-    const res = localStorage.getItem[searchUrl];
+    //checking cached storage
+    // const res = JSON.parse(localStorage.getItem[currentQuery]);
+    const res = this.cache[currentQuery];
+    // console.log("res", res);
     if (res) {
       console.log("cache hit");
-      const pagesCount = res.data.totalResults / 10;
+      const pagesCount = res.totalResults / 10;
       this.setState({
         ...this.state,
-        results: res.data.articles,
+        results: res.articles,
         loading: false,
         pagesCount: Math.ceil(pagesCount),
         disabled: Math.ceil(pagesCount) === this.state.pageNo ? true : false,
       });
-      // return;
+      // if not found, make a new request
     } else {
       this.prevRequestToken = axios.CancelToken.source();
       axios
-        .get(searchUrl, {
+        .get(currentQuery, {
           cancelToken: this.prevRequestToken.token,
         })
         .then((res) => {
           console.log(res.data);
-          // this.cache[searchUrl] = res;
-          localStorage.setItem(`${searchUrl}`, JSON.stringify(res));
+          // store the new response in cache
+          // localStorage.setItem(`${currentQuery}`, JSON.stringify(res.data));
+          this.cache[currentQuery] = res.data;
           const pagesCount = res.data.totalResults / 10;
           this.setState({
             ...this.state,
@@ -88,6 +91,7 @@ class Home extends React.Component {
     }
   };
 
+  //takes user input and displays error message if input size is less than 3 characters
   userinput = (event) => {
     let currentinput = event.target.value;
     if (currentinput.length >= 3) {
@@ -104,9 +108,11 @@ class Home extends React.Component {
           // and we have set the state to loading
           clearTimeout(this.timer);
           const newTimer = setTimeout(() => {
-            this.fetchSearchResults(currentinput);
+            this.checkCacheOrFetch(currentinput);
           }, 1000);
-          this.setState({ ...this.state, timer: newTimer });
+          //waiting for the user to stop typing, to prevent intermediate states
+          //from sending requests
+          this.setState({ ...this.state, timer: newTimer, errmsg: "" });
         }
       );
     } else {
@@ -118,34 +124,6 @@ class Home extends React.Component {
         results: {},
         pageNo: 1,
       });
-    }
-  };
-
-  renderSearchResults = () => {
-    const { results } = this.state;
-    if (Object.keys(results).length && results.length) {
-      return (
-        <div className={styles.results_container}>
-          {results.map((result) => {
-            return (
-              <a
-                key={result.id}
-                href={result.previewURL}
-                className={styles.result_items}
-              >
-                <h6 className={styles.image_username}>{result.user}</h6>
-                <div className={styles.image_wrapper}>
-                  <img
-                    className={styles.image}
-                    src={result.previewURL}
-                    alt={result.user}
-                  />
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      );
     }
   };
 
@@ -167,7 +145,7 @@ class Home extends React.Component {
         <img
           src={Loader}
           className={`${styles.loading} ${
-            this.cacheloading ? `${styles.show}` : `${styles.hide}`
+            this.state.loading ? `${styles.show}` : `${styles.hide}`
           }`}
           alt="loader"
         />
