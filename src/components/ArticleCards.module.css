@@ -1,0 +1,120 @@
+.card {
+  width: 330px;
+  height: 380px;
+  margin: 50px auto;
+  filter: drop-shadow(-2px 4px 5px rgba(20, 118, 163, 0.233));
+  cursor: pointer;
+  transition: 0.5s;
+  text-overflow: ellipsis;
+}
+.card:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(-2px 4px 8px rgba(20, 118, 163, 0.233));
+}
+.card_content {
+  width: inherit;
+  height: inherit;
+  position: relative;
+  background-color: rgb(252, 244, 244);
+  border-radius: 180px 0;
+  z-index: 2;
+  text-overflow: ellipsis;
+}
+.card_layout {
+  width: inherit;
+  height: inherit;
+  background-color: #2d7bde;
+  position: absolute;
+  top: 0;
+  border-radius: 38% 0px;
+  z-index: 1;
+}
+.card_icon {
+  width: 100%;
+  text-align: center;
+}
+.card_content ion-icon {
+  font-size: 5em;
+  margin-top: 25px;
+  color: #2d7bde;
+}
+.card_content .card_title {
+  color: #2d7bde;
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  padding-top: 20%;
+  padding-left: 20%;
+  padding-right: 10%;
+  font-size: 1em;
+  text-overflow: ellipsis;
+}
+
+.card_title {
+  height: 50%;
+  /* white-space: nowrap; */
+  overflow: hidden;
+}
+
+.card_content .card_body {
+  max-width: 73%;
+  height: 125px;
+  margin: 27px auto 11px;
+  text-align: center;
+  overflow: hidden;
+  font-family: sans-serif;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+}
+.card_content .card_body span {
+  color: #2d7bde;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 600px) {
+  .card {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  .card_content {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+  }
+  .card_layout {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+  }
+  .card_icon {
+    width: 100%;
+    text-align: center;
+  }
+  .card_content ion-icon {
+    font-size: 3em;
+    margin-top: 10px;
+    color: #2d7bde;
+  }
+  .card_content .card_title {
+    color: #2d7bde;
+    font-family: monospace, sans-serif;
+    font-weight: bold;
+    padding-top: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+    font-size: 0.8em;
+  }
+  .card_content .card_body {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    text-align: center;
+    overflow: hidden;
+    font-family: sans-serif;
+    line-height: 1.4;
+  }
+  .card_content .card_body span {
+    color: #2d7bde;
+    font-weight: bold;
+  }
+}
