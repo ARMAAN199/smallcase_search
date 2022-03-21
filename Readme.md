@@ -37,7 +37,6 @@ We do not call the fetch function untill it's been a second since user pressed a
 
 ---
 
-Showing Proper error messages, when needed
 <img src="./public/loader.png" alt="Desktop" width="300"/>
 <img src="./public/ipad.png" alt="Ipad" width="150" height="auto"/>
 <img src="./public/Mobile.png" alt="Mobile" width="75" height="auto"/>
