@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import Loader from "../loader.svg";
 import ArticleCards from "./ArticleCards";
-import Error from "./Error";
+import err from "./err";
 import styles from "./Home.module.css";
 
 class Home extends React.Component {
@@ -80,8 +80,8 @@ class Home extends React.Component {
               Math.ceil(pagesCount) === this.state.pageNo ? true : false,
           });
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
           this.setState({
             ...this.state,
             loading: false,
@@ -91,9 +91,9 @@ class Home extends React.Component {
     }
   };
 
-  //takes user input and displays error message if input size is less than 3 characters
-  userinput = (event) => {
-    let currentinput = event.target.value;
+  //takes user input and displays err message if input size is less than 3 characters
+  userinput = (e) => {
+    let currentinput = e.target.value;
     if (currentinput.length >= 3) {
       this.setState(
         {
@@ -110,7 +110,7 @@ class Home extends React.Component {
           const newTimer = setTimeout(() => {
             this.checkCacheOrFetch(currentinput);
           }, 1000);
-          //waiting for the user to stop typing, to prevent intermediate states
+          //waiting for the user to stop typing, to pre intermediate states
           //from sending requests
           this.setState({ ...this.state, timer: newTimer, errmsg: "" });
         }
@@ -158,7 +158,7 @@ class Home extends React.Component {
         </div>
 
         {this.state.errmsg.length > 0 ? (
-          <Error errmsg={this.state.errmsg} />
+          <err errmsg={this.state.errmsg} />
         ) : (
           true
         )}
