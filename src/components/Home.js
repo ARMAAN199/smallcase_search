@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import Loader from "../loader.svg";
 import ArticleCards from "./ArticleCards";
-import err from "./err";
+import Err from "./Err";
 import styles from "./Home.module.css";
 
 class Home extends React.Component {
@@ -158,7 +158,7 @@ class Home extends React.Component {
         </div>
 
         {this.state.errmsg.length > 0 ? (
-          <err errmsg={this.state.errmsg} />
+          <Err errmsg={this.state.errmsg} />
         ) : (
           true
         )}
